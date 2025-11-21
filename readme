@@ -19,14 +19,14 @@ API RESTful para gestionar un sistema de votaciones completo, con soporte para v
 ## Instalación
 1. **Clonar el repositorio:**
 ```bash
-git clone <tu-repo>
-cd voting-system
+git clone https://github.com/samuelcherrera/sistema-votaciones-apiRestful.git
+cd sistema-votaciones-apiRestful
 ```
 
 2. **Crear un entorno virtual:**
 ```bash
 python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
+venv\Scripts\activate
 ```
 
 3. **Instalar dependencias:**
@@ -41,7 +41,7 @@ Crear una base de datos en MySQL:
 CREATE DATABASE votingdb;
 ```
 
-Actualizar la conexión en `database.py` si es necesario:
+SOLO SI ES NECESARIO actualizar la conexión en `database.py` :
 ```python
 DATABASE_URL = "mysql+pymysql://usuario:contraseña@localhost:3306/votingdb"
 ```
@@ -100,7 +100,7 @@ curl -X POST "http://localhost:8000/token" \
 
 - **POST** `/votes` - Emitir un voto
 - **GET** `/votes` - Obtener todos los votos (Requiere autenticación)
-- **GET** `/votes/statistics` - Obtener estadísticas (Requiere autenticación)
+- ` - Obtener estadísticas (Requiere autenticación)
 
 ## Ejemplos de Uso
 
@@ -165,19 +165,17 @@ curl -X GET "http://localhost:8000/votes/statistics" \
 ```
 
 ## Validaciones
-
-✅ Un votante no puede votar dos veces
-✅ No puede existir un votante con nombre de candidato (y viceversa)
-✅ El ID de votante debe ser válido
-✅ El ID de candidato debe ser válido
-✅ Los emails deben ser únicos
-✅ El campo `has_voted` se actualiza automáticamente
-✅ Los votos de candidatos se cuentan automáticamente
+- Un votante no puede votar dos veces
+- No puede existir un votante con nombre de candidato (y viceversa)
+- El ID de votante debe ser válido
+- El ID de candidato debe ser válido
+- Los emails deben ser únicos
+- El campo `has_voted` se actualiza automáticamente
+- Los votos de candidatos se cuentan automáticamente
 
 ## Estructura del Proyecto
-
 ```
-voting-system/
+SISTEMA DE VOTACIONES/
 ├── main.py           # Endpoints principales
 ├── models.py         # Modelos SQLAlchemy
 ├── schemas.py        # Validación con Pydantic
