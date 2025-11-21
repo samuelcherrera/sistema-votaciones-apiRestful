@@ -1,28 +1,22 @@
+## INFORMACIÓN DE CONTACTO
+- SAMUEL CASTAÑO HERRERA 
+- CEL: 3016585873 
+- CORREO: SAMUELCASTA597@GMAIL.COM
+
 # Sistema de Votaciones API
-
-SAMUEL CASTAÑO HERRERA CC:1.033.178.683 CEL:3016585873 CORREO:SAMUELCASTA597@GMAIL.COM
-
 API RESTful para gestionar un sistema de votaciones completo, con soporte para votantes, candidatos, emisión de votos y estadísticas en tiempo real.
 
-## Características
-
-- ✅ Gestión completa de votantes y candidatos
-- ✅ Sistema de votación con validaciones robustas
-- ✅ Autenticación JWT para endpoints protegidos
-- ✅ Estadísticas de votación en tiempo real
-- ✅ Restricción: un votante solo puede votar una vez
-- ✅ Restricción: un votante no puede ser candidato y viceversa
-- ✅ Base de datos relacional con MySQL
-- ✅ Manejo completo de errores
+## Características Técnicas
+- código en python, usando FastApi para una mejor documentación con Swagger
+- Autenticación JWT para endpoints protegidos
+- Base de datos relacional con MySQL
 
 ## Requisitos Previos
-
 - Python 3.8+
 - MySQL Server
 - pip
 
 ## Instalación
-
 1. **Clonar el repositorio:**
 ```bash
 git clone <tu-repo>
@@ -200,6 +194,18 @@ voting-system/
 - **Validaciones**: A nivel de aplicación y base de datos
 - **Relaciones**: One-to-One (Voter-Vote), One-to-Many (Candidate-Votes)
 - **Constraint Único**: `voter_id` único en tabla `votes` para evitar doble voto
+
+## Documentación Interactiva
+
+Accede a la documentación Swagger interactiva donde puedes probar todos los endpoints en vivo:
+
+**URL:** `http://localhost:8000/docs`
+
+En Swagger podrás:
+- Ver todos los endpoints disponibles
+- Probar cada uno directamente desde el navegador
+- Obtener automáticamente las estadísticas de votación
+- Ver las respuestas y errores en tiempo real
 
 ## Licencia
 

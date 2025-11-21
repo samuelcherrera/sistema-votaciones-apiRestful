@@ -26,6 +26,7 @@ def get_db():
 @app.get("/",include_in_schema=False)
 def root():
     return {"message": "API del Sistema de Votaciones funcionando correctamente, para probar los endpoints dirígete a localhost:8000/docs"}
+
 # ===========================
 # AUTENTICACIÓN
 # ===========================
