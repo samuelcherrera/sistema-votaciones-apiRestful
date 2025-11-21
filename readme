@@ -1,0 +1,206 @@
+# Sistema de Votaciones API
+
+SAMUEL CASTAÑO HERRERA CC:1.033.178.683 CEL:3016585873 CORREO:SAMUELCASTA597@GMAIL.COM
+
+API RESTful para gestionar un sistema de votaciones completo, con soporte para votantes, candidatos, emisión de votos y estadísticas en tiempo real.
+
+## Características
+
+- ✅ Gestión completa de votantes y candidatos
+- ✅ Sistema de votación con validaciones robustas
+- ✅ Autenticación JWT para endpoints protegidos
+- ✅ Estadísticas de votación en tiempo real
+- ✅ Restricción: un votante solo puede votar una vez
+- ✅ Restricción: un votante no puede ser candidato y viceversa
+- ✅ Base de datos relacional con MySQL
+- ✅ Manejo completo de errores
+
+## Requisitos Previos
+
+- Python 3.8+
+- MySQL Server
+- pip
+
+## Instalación
+
+1. **Clonar el repositorio:**
+```bash
+git clone <tu-repo>
+cd voting-system
+```
+
+2. **Crear un entorno virtual:**
+```bash
+python -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+```
+
+3. **Instalar dependencias:**
+```bash
+pip install -r requirements.txt
+```
+
+4. **Configurar la base de datos:**
+
+Crear una base de datos en MySQL:
+```sql
+CREATE DATABASE votingdb;
+```
+
+Actualizar la conexión en `database.py` si es necesario:
+```python
+DATABASE_URL = "mysql+pymysql://usuario:contraseña@localhost:3306/votingdb"
+```
+
+5. **Ejecutar la aplicación:**
+```bash
+uvicorn main:app --reload
+```
+
+La API estará disponible en: `http://localhost:8000`
+Documentación interactiva: `http://localhost:8000/docs`
+
+## Autenticación
+
+**Credenciales:**
+- Username: `admin`
+- Password: `admin123`
+
+### Obtener Token
+
+```bash
+curl -X POST "http://localhost:8000/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=admin&password=admin123"
+```
+
+**Respuesta:**
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "bearer"
+}
+```
+
+## Endpoints
+
+### Autenticación
+
+- **POST** `/token` - Obtener token JWT
+
+### Votantes (Requiere autenticación)
+
+- **POST** `/voters` - Registrar nuevo votante
+- **GET** `/voters` - Obtener lista de votantes
+- **GET** `/voters/{id}` - Obtener votante por ID
+- **DELETE** `/voters/{id}` - Eliminar votante
+
+### Candidatos (Requieren autenticación)
+
+- **POST** `/candidates` - Registrar nuevo candidato
+- **GET** `/candidates` - Obtener lista de candidatos
+- **GET** `/candidates/{id}` - Obtener candidato por ID
+- **DELETE** `/candidates/{id}` - Eliminar candidato
+
+### Votos (Públicos)
+
+- **POST** `/votes` - Emitir un voto
+- **GET** `/votes` - Obtener todos los votos (Requiere autenticación)
+- **GET** `/votes/statistics` - Obtener estadísticas (Requiere autenticación)
+
+## Ejemplos de Uso
+
+### 1. Registrar un votante
+```bash
+curl -X POST "http://localhost:8000/voters" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer TU_TOKEN" \
+  -d '{
+    "name": "Juan Pérez",
+    "email": "juan@example.com"
+  }'
+```
+
+### 2. Registrar un candidato
+```bash
+curl -X POST "http://localhost:8000/candidates" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer TU_TOKEN" \
+  -d '{
+    "name": "María García",
+    "party": "Partido A"
+  }'
+```
+
+### 3. Emitir un voto
+```bash
+curl -X POST "http://localhost:8000/votes" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "voter_id": 1,
+    "candidate_id": 1
+  }'
+```
+
+### 4. Obtener estadísticas
+```bash
+curl -X GET "http://localhost:8000/votes/statistics" \
+  -H "Authorization: Bearer TU_TOKEN"
+```
+
+**Respuesta:**
+```json
+{
+  "total_votes": 3,
+  "total_voters_voted": 3,
+  "results": [
+    {
+      "candidate_id": 1,
+      "candidate_name": "María García",
+      "votes": 2,
+      "percentage": 66.67
+    },
+    {
+      "candidate_id": 2,
+      "candidate_name": "Carlos López",
+      "votes": 1,
+      "percentage": 33.33
+    }
+  ]
+}
+```
+
+## Validaciones
+
+✅ Un votante no puede votar dos veces
+✅ No puede existir un votante con nombre de candidato (y viceversa)
+✅ El ID de votante debe ser válido
+✅ El ID de candidato debe ser válido
+✅ Los emails deben ser únicos
+✅ El campo `has_voted` se actualiza automáticamente
+✅ Los votos de candidatos se cuentan automáticamente
+
+## Estructura del Proyecto
+
+```
+voting-system/
+├── main.py           # Endpoints principales
+├── models.py         # Modelos SQLAlchemy
+├── schemas.py        # Validación con Pydantic
+├── crud.py           # Operaciones CRUD
+├── database.py       # Configuración de BD
+├── auth.py           # Autenticación JWT
+├── requirements.txt  # Dependencias
+└── README.md         # Este archivo
+```
+
+## Notas Técnicas
+
+- **JWT**: Tokens que expiran en 30 minutos
+- **Validaciones**: A nivel de aplicación y base de datos
+- **Relaciones**: One-to-One (Voter-Vote), One-to-Many (Candidate-Votes)
+- **Constraint Único**: `voter_id` único en tabla `votes` para evitar doble voto
+
+## Licencia
+
+Este proyecto es de código abierto y está disponible bajo la licencia MIT.
